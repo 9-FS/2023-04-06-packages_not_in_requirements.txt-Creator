@@ -20,18 +20,16 @@ def main() -> None:
     with open(REQUIREMENTS_CURRENT_FILENAME, "rt") as requirements_current_file:                                                    #load requirements current
         requirements_current=[requirement.strip("\n") for requirement in requirements_current_file.readlines() if requirement!=""]  #filter out empty lines
     logging.info(f"\rLoaded current requirements from \"{REQUIREMENTS_CURRENT_FILENAME}\".")
-    logging.debug(requirements_current)
+    logging.info(requirements_current)
     logging.info(f"Removing \"{REQUIREMENTS_CURRENT_FILENAME}\"...")
     os.remove(REQUIREMENTS_CURRENT_FILENAME)                                                                                        #removing now unncessary temp file
     logging.info(f"\rRemoved \"{REQUIREMENTS_CURRENT_FILENAME}\".")
 
     logging.info(f"Loading desired requirements from \"requirements.txt\"...")
-    with open("requirements.txt", "rt", encoding="utf-16-le") as requirements_desired_file: #generated requirements.txt has sussy encoding                                                         #load requirements desired
+    with open("requirements.txt", "rt") as requirements_desired_file:                                                               #load requirements desired
         requirements_desired=[requirement.strip("\n") for requirement in requirements_desired_file.readlines() if requirement!=""]  #filter out empty lines
-    if 1<=len(requirements_desired):
-        requirements_desired[0]=requirements_desired[0][1:] #cut off BOM
     logging.info(f"\rLoaded desired requirements from \"requirements.txt\".")
-    logging.debug(requirements_desired)
+    logging.info(requirements_desired)
 
 
     for requirement in requirements_current:            #go through all current requirements
