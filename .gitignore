@@ -3,6 +3,5 @@
 *.log
 *.pyc
 *.token
-/src/__pycache__/
-/src/Log/
+/Log/
 /src/test.py
