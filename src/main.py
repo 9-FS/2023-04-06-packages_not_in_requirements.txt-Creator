@@ -6,42 +6,42 @@ import os
 
 @KFS.log.timeit
 def main() -> None:
-    packages_too_many:  list[str]=[]    #{requirements_current} \ {requirements}, the requirements that should be uninstalled
+    packages_current: list[str]         #packages that the project actually has installed at the moment
+    PACKAGES_CURRENT_FILENAME: str="packages_current.temp"
+    packages_desired: list[str]         #packages that the project should have
+    packages_too_many:  list[str]=[]    #{packages_current} \ {packages_desired}, the requirements that should be uninstalled
     PACKAGES_TOO_MANY_FILENAME: str="packages_not_in_requirements.txt"
-    REQUIREMENTS_CURRENT_FILENAME: str="requirements_current.temp"
-    requirements_current: list[str]     #requirements that the project actually has at the moment
-    requirements_desired: list[str]     #requirements that the project should have
 
 
-    logging.info("Generating current requirements...")
-    os.system(f"pip freeze > {REQUIREMENTS_CURRENT_FILENAME}")                                                                      #write requirements current
-    logging.info(f"\rGenerated current requirements, saved in \"{REQUIREMENTS_CURRENT_FILENAME}\".")
-    logging.info(f"Loading current requirements from \"{REQUIREMENTS_CURRENT_FILENAME}\"...")
-    with open(REQUIREMENTS_CURRENT_FILENAME, "rt") as requirements_current_file:                                                    #load requirements current
-        requirements_current=[requirement.strip("\n") for requirement in requirements_current_file.readlines() if requirement!=""]  #filter out empty lines
-    logging.info(f"\rLoaded current requirements from \"{REQUIREMENTS_CURRENT_FILENAME}\".")
-    logging.info(requirements_current)
-    logging.info(f"Removing \"{REQUIREMENTS_CURRENT_FILENAME}\"...")
-    os.remove(REQUIREMENTS_CURRENT_FILENAME)                                                                                        #removing now unncessary temp file
-    logging.info(f"\rRemoved \"{REQUIREMENTS_CURRENT_FILENAME}\".")
+    logging.info("Generating list of currently installed packages...")
+    os.system(f"pip freeze > {PACKAGES_CURRENT_FILENAME}")                                                          #write packages current
+    logging.info(f"\rGenerated list of currently installed packages, saved in \"{PACKAGES_CURRENT_FILENAME}\".")
+    logging.info(f"Loading list of currently installed packages from \"{PACKAGES_CURRENT_FILENAME}\"...")
+    with open(PACKAGES_CURRENT_FILENAME, "rt") as packages_current_file:                                            #load packages current
+        packages_current=[package.strip("\n") for package in packages_current_file.readlines() if package!=""]      #filter out empty lines
+    logging.info(f"\rLoaded list of currently installed packages from \"{PACKAGES_CURRENT_FILENAME}\".")
+    logging.info(packages_current)
+    logging.info(f"Deleting \"{PACKAGES_CURRENT_FILENAME}\"...")
+    os.remove(PACKAGES_CURRENT_FILENAME)                                                                            #delete now unncessary temp file
+    logging.info(f"\rDeleted \"{PACKAGES_CURRENT_FILENAME}\".")
 
-    logging.info(f"Loading desired requirements from \"requirements.txt\"...")
-    with open("requirements.txt", "rt") as requirements_desired_file:                                                               #load requirements desired
-        requirements_desired=[requirement.strip("\n") for requirement in requirements_desired_file.readlines() if requirement!=""]  #filter out empty lines
-    logging.info(f"\rLoaded desired requirements from \"requirements.txt\".")
-    logging.info(requirements_desired)
+    logging.info(f"Loading desired packages from \"requirements.txt\"...")
+    with open("requirements.txt", "rt") as packages_desired_file:                                               #load packages desired
+        packages_desired=[package.strip("\n") for package in packages_desired_file.readlines() if package!=""]  #filter out empty lines
+    logging.info(f"\rLoaded desired packages from \"requirements.txt\".")
+    logging.info(packages_desired)
 
 
-    for requirement in requirements_current:            #go through all current requirements
-        if requirement not in requirements_desired:     #if requirement not in the desired requirements:
-            packages_too_many.append(requirement)       #append to list to uninstall
-    logging.info("Installed packages, that are not in \"requirements.txt\":")
+    for package in packages_current:            #go through all currently installed packages
+        if package not in packages_desired:     #if package not in the desired packages:
+            packages_too_many.append(package)   #append to list to uninstall
+    logging.info("Installed packages that are not in \"requirements.txt\":")
     logging.info(packages_too_many)
     
 
-    logging.info(f"Saving packages not in \"requirements.txt\" in \"{PACKAGES_TOO_MANY_FILENAME}\"...")
-    with open(PACKAGES_TOO_MANY_FILENAME, "wt") as requirements_too_many_file:
-        requirements_too_many_file.write("\n".join(packages_too_many))
-    logging.info(f"\rSaved packages not in \"requirements.txt\" in \"{PACKAGES_TOO_MANY_FILENAME}\".")
+    logging.info(f"Saving packages that are not in \"requirements.txt\" in \"{PACKAGES_TOO_MANY_FILENAME}\"...")
+    with open(PACKAGES_TOO_MANY_FILENAME, "wt") as packages_too_many_file:
+        packages_too_many_file.write("\n".join(packages_too_many))
+    logging.info(f"\rSaved packages that are not in \"requirements.txt\" in \"{PACKAGES_TOO_MANY_FILENAME}\".")
 
     return
