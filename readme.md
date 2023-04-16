@@ -13,14 +13,6 @@ Author: "구FS"
 
 ## 1. General
 
-The name pretty much sums up what this program does. It creates a current requirements list with `pip freeze > requirements_current.temp`, subtracts all the (desired) requirements from `requirements.txt`, and saves the result in `packages_not_in_requirements.txt`. The unnecessary requirements can now be easily removed with `pip uninstall -y -r packages_not_in_requirements.txt` without reinstalling everything.
+The name pretty much sums up what this program does. It creates a list of currently installed packages that are not listed in `requirements.txt` and saves the result in `packages_not_in_requirements.txt`. The unnecessary requirements can now be easily removed with `pip uninstall -y -r packages_not_in_requirements.txt`, otherwise you'd need to bruteforce this functionality by uninstalling everything and then reinstalling all desired packages from `requirements.txt`.
 
-
-<div class="img_centre_30">
-    <a href="https://www.paypal.com/paypalme/KooFelixSangmo">
-        <img alt="Error: Could not load image source."
-        src="https://i.pinimg.com/originals/60/fd/e8/60fde811b6be57094e0abc69d9c2622a.jpg"/>
-    </a>
-    <p class=img_caption>Click to buy me a beer!</p>
-</div>
 </body>
